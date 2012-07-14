@@ -1,0 +1,12 @@
+<div id="post" align ="right">
+<%= link_to 'Register', new_user_path %>
+<%= form_tag dologin_login_index_path  do %>
+    <%= label_tag("Email ID") %>
+    <%= email_field_tag(:email) %></br>  
+    <%= label_tag ("password") %>
+    <%= password_field_tag(:password) %></br>
+<%= submit_tag("login") %>
+<% end %>
+
+ </div>   
+ 

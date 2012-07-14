@@ -1,0 +1,20 @@
+
+<div id="index_id">
+  <div id="img">
+    <%= image_tag @user.avatar.url,:size => "170x150" %>
+  </div>
+  hello <%= session[:user_id] %> <%= link_to 'logout', logout_login_path(@user) %>
+</div>
+
+<div id="left_item">
+</div>
+
+<div id="right_item">
+</div>
+
+<div id="middle">
+  <%= render 'editform' %>
+</div>
+
+<div id="footer">
+</div>

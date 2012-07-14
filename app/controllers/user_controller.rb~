@@ -1,0 +1,52 @@
+class UserController < ApplicationController
+  before_filter :check_session, :only=>[:userprofile,:edit,:update]
+ 
+  def index
+  end
+
+  def new
+    @user = User.new
+  end
+
+  def create
+    @users = User.new(params[:user])
+    if @users.save
+      session[:user_id]=@users.email_id
+      redirect_to userprofile_user_path(@users.id)
+    else
+      redirect_to new_user_path
+    end
+  end
+  
+  def userprofile
+
+    @user=User.find(params[:id])
+    @friends = Friendrequest.select("friend_id").where(:user_id=>params[:id], :status =>"accepted")
+    @friends_lists = User.find(:all, :conditions => ['id not in (?)', @friends.map{|s| s.friend_id}])
+    @friend_request_id = @user.friendrequests.where(:status=>"pending")
+
+    if @friends_lists.blank?
+       @friends_lists = User.find(:all, :conditions => ['id not in (?)', @user.id])
+    end
+    @friend_request_name = User.where(:id => @friend_request_id.map{|s| s.friend_id})
+    @friend_added_id = @user.friend_added_lists.uniq
+
+    @friend_added_name=User.where(:id => @friend_added_id.map{|s| s.friend_id})
+  end
+  
+  def edit
+    @user = User.find(params[:id])
+  end
+ 
+  def update
+    @user = User.find(params[:id])
+    @users=User.where(:id=>params[:id])
+    session[:user_id]=@users[0].email_id
+    if @user.update_attributes(params[:user])
+      redirect_to userprofile_user_path(@user.id)
+    else
+      render edit_user(@user)
+    end
+  end
+
+end

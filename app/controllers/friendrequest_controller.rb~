@@ -1,0 +1,40 @@
+class FriendrequestController < ApplicationController
+  
+  def addfriend 
+
+    @friend =Friendrequest.new
+    @friend.friend_id = params[:id]
+    @user  = User.where(:email_id=>session[:user_id])
+    @friend.user_id = @user[0].id
+    @friend.status = "pending"
+    if @friend.save
+       redirect_to  userprofile_user_path(@user[0].id)
+    else
+      redirect_to user_index_path
+    end
+  end
+  
+  def destroy
+    @user = User.where(:email_id => session[:user_id])
+    @friendrequest = Friendrequest.where(:user_id=>params[:id],:friend_id=>@user[0].id)
+    @friendrequest[0].destroy
+    redirect_to userprofile_user_path(@user[0].id)
+  end
+
+  def add_friend_into_list
+    @user = User.where(:email_id => session[:user_id])
+   # Friendrequest.delete_all(["user_id = ? AND friend_id = ? ", @user[0].id, params[:id]])
+    Friendrequest.update_all(["status = ?","accepted"], ["user_id = ? and friend_id = ?",@user[0].id, params[:id]])
+    @friend_added_list = FriendAddedList.new
+    @friend_added_list.friend_id = params[:id]
+    @friend_added_list.user_id = @user[0].id
+    @friend_added_list.save
+    @friend_added_list = FriendAddedList.new
+    @friend_added_list.friend_id = @user[0].id
+    @friend_added_list.user_id = params[:id]
+    @friend_added_list.save
+    redirect_to userprofile_user_path(@user[0].id)
+    
+  end
+
+end

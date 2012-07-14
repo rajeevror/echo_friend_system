@@ -1,0 +1,39 @@
+
+<div id="index_id">
+  <div id="img">
+   <%= image_tag @user.avatar.url,:size => "170x150", :alt=>"No image" %>
+  </div>
+    hello <%= session[:user_id] %>   <%= link_to 'edit profile', edit_user_path(@user) %>   <%= link_to 'logout', logout_login_path(@user) %>
+</div>
+
+<div id="left_item">
+  <div id="added_friend">
+    Friend list....
+     
+  </div>
+  <div id="friend_request_name">
+       Friend_Request....<p>
+    
+  </div> 
+</div>
+
+<div id="right_item">
+  <%= link_to 'See all friends',all_suggess_friends_friendrequest_path(@user) %></br><p>
+   
+</div>
+
+<div id="middle"><p>
+  <% @friends_lists.each do |f| %>
+      <% if f.email_id == session[:user_id] %>
+      <% else  %> 
+        <%= image_tag f.avatar.url,:size => "50x30", :alt=>"No image" %>&nbsp;&nbsp;&nbsp;&nbsp;<%= f.user_name %><%= button_to "Send Friend Request", {:controller => :friendrequest,:action => 'addfriend', :id => f.id }, :method => :get %>
+       
+        <p></br>
+
+      <% end %>
+   <% end %>
+</div>
+
+<div id="footer">
+</div>
+
