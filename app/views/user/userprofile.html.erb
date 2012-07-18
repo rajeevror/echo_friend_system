@@ -2,9 +2,9 @@
       
 <div id="index_id">
   <div id="img">
-    <%= image_tag @user.avatar.url,:size => "170x150", :alt=>"No image" %>
+    <%= image_tag @user.avatar.url,:size => "170x150", :alt=>"/home/rajeev_work/echo_friend/q.png" %>
   </div>
-    hello <%= session[:user_id] %>  <%= link_to 'edit profile', edit_user_path(@user) %>   <%= link_to 'logout',logout_login_path(@user) %>
+    hello <%= link_to "#{@user.email_id}",userprofile_user_path(@user.id) %>  <%= link_to 'edit profile', edit_user_path(@user) %>   <%= link_to 'logout',logout_login_path(@user) %>
 </div>
 
 <div id="left_item">
@@ -36,9 +36,23 @@
    <% end %>
 </div>
 
-<div id="middle">
+<div id="middle" >
+   <p><%= link_to 'POST', {:controller=>"wall",:action=> 'new'},:remote=>true %></p>
+   <div id="postwall"></div><br />
+   <div id="postwalls"></div>
+  
 </div>
 
 <div id="footer">
 </div>
 
+<%= javascript_tag do %>
+  $("#middle").bind("ajax:complete", function(et, e){
+    $("#postwall").html(e.responseText); // insert content
+  });
+<% end %>
+<%= javascript_tag do %>
+  $("#new_wall").bind("ajax:complete", function(et, e){
+    $("#postwalls").append(e.responseText); // insert content
+  });
+<% end %>

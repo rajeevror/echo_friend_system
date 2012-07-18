@@ -12,7 +12,7 @@ EchoFriend::Application.routes.draw do
   end
 
   end
-
+  resources :wall
   resources :login do
     member do
      get 'logout'
@@ -30,6 +30,18 @@ EchoFriend::Application.routes.draw do
      get 'add_friend_into_list'
     end
   end
+
+  resources :photo do
+    member do
+      post 'post_photo'
+    end
+  end 
+  resources :wall_like do
+    member do
+       get 'likepost'
+     end
+   end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

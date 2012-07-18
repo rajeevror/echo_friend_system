@@ -1,5 +1,5 @@
 class FriendrequestController < ApplicationController
-  before_filter :check_session, :only=>[:index]
+  before_filter :check_session, :only=>[:index,:all_suggess_friends]
   def index
     
   end
@@ -37,10 +37,10 @@ class FriendrequestController < ApplicationController
   end
   
   def destroy
-    @user = User.where(:email_id => session[:user_id])
-    @friendrequest = Friendrequest.where(:user_id=>@user[0].id,:friend_id=>params[:id])
-    @friendrequest[0].destroy
-    redirect_to userprofile_user_path(@user[0].id)
+    user = User.where(:email_id => session[:user_id])
+    friendrequest = Friendrequest.where(:friend_id=>user[0].id,:user_id=>params[:id])
+    friendrequest[0].destroy
+    redirect_to userprofile_user_path(user[0].id)
   end
 
   def add_friend_into_list

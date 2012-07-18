@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120713124027) do
+ActiveRecord::Schema.define(:version => 20120717101712) do
 
   create_table "answer_tables", :force => true do |t|
     t.string   "answer"
@@ -21,6 +21,16 @@ ActiveRecord::Schema.define(:version => 20120713124027) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "comments", :force => true do |t|
+    t.integer  "photo_id"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "comments", ["photo_id"], :name => "index_comments_on_photo_id"
+  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "friend_added_lists", :force => true do |t|
     t.integer  "friend_id"
@@ -41,6 +51,28 @@ ActiveRecord::Schema.define(:version => 20120713124027) do
 
   add_index "friendrequests", ["user_id"], :name => "index_friendrequests_on_user_id"
 
+  create_table "likes", :force => true do |t|
+    t.integer  "photo_id"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "likes", ["photo_id"], :name => "index_likes_on_photo_id"
+  add_index "likes", ["user_id"], :name => "index_likes_on_user_id"
+
+  create_table "photos", :force => true do |t|
+    t.integer  "user_id"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.string   "share_photo_file_name"
+    t.string   "share_photo_content_type"
+    t.integer  "share_photo_file_size"
+    t.datetime "share_photo_updated_at"
+  end
+
+  add_index "photos", ["user_id"], :name => "index_photos_on_user_id"
+
   create_table "question_tables", :force => true do |t|
     t.string   "question"
     t.datetime "created_at"
@@ -53,6 +85,16 @@ ActiveRecord::Schema.define(:version => 20120713124027) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "shares", :force => true do |t|
+    t.integer  "photo_id"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "shares", ["photo_id"], :name => "index_shares_on_photo_id"
+  add_index "shares", ["user_id"], :name => "index_shares_on_user_id"
 
   create_table "user_tables", :force => true do |t|
     t.string   "user_name"
@@ -79,5 +121,24 @@ ActiveRecord::Schema.define(:version => 20120713124027) do
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
   end
+
+  create_table "wall_likes", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "wall_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "wall_likes", ["user_id"], :name => "index_wall_likes_on_user_id"
+  add_index "wall_likes", ["wall_id"], :name => "index_wall_likes_on_wall_id"
+
+  create_table "walls", :force => true do |t|
+    t.string   "post_wall"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "walls", ["user_id"], :name => "index_walls_on_user_id"
 
 end

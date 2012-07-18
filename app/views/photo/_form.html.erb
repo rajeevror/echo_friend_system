@@ -1,0 +1,6 @@
+<%= form_for @photo, :url => {:action => 'create', :id =>@photo.id} do |f| %>
+  <%= f.hidden_field :user_id, "#{@user.id}" %>
+  <%= f.label :image %>
+  <%= f.file_field :share_photo %><br />
+  <%= f.submit %>
+<% end %>

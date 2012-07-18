@@ -3,7 +3,7 @@
   <div id="img">
    <%= image_tag @user.avatar.url,:size => "170x150", :alt=>"No image" %>
   </div>
-    hello <%= session[:user_id] %>   <%= link_to 'edit profile', edit_user_path(@user) %>   <%= link_to 'logout', logout_login_path(@user) %>
+    hello  <%= link_to "#{@user.email_id}",userprofile_user_path(@user.id) %> <%= link_to 'edit profile', edit_user_path(@user) %>   <%= link_to 'logout', logout_login_path(@user) %>
 </div>
 
 <div id="left_item">

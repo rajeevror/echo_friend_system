@@ -17,12 +17,6 @@ class UserController < ApplicationController
       redirect_to new_user_path
     end
   end
-  
-
-
-
-
-
   def userprofile
     @user=User.find(params[:id])
     @friend_request_id = Friendrequest.select("user_id").where(:friend_id=>@user.id , :status=>"pending")
@@ -41,8 +35,35 @@ class UserController < ApplicationController
       @friendss = Friendrequest.select("user_id").where(:friend_id=>params[:id], :status =>"accepted")
       friendss = @friendss.map{|s| s.user_id}
       c = friends + friendss
-      @friend_added_id = @user.friend_added_lists.uniq
       @friend_added_name=User.where(:id => c)
+      abc = c << params[:id].to_i # all joined friend id
+      @wall_user_id = Wall.find(:all)
+      walls = @wall_user_id.map{|s| s.user_id}
+      @hash = Hash.new
+      for i in 0...abc.length
+        wall = Wall.where(:user_id => abc[i]) # find all user_id from wall model
+        unless wall.blank? #check
+          for j in 0...wall.length  
+            walllike = WallLike.where(:user_id => abc[i],:wall_id=>wall[j].id)
+            if walllike.blank?
+             # @hash[User.where(:id=>abc[i])]= {"#{wall[j].post_wall}"=>{"#{wall[j].id}"=>"like"}}
+#######################################
+# <% @hash.each do |key,value| %>
+   #  <%= key[0].user_name %>  
+   #  <% value.each do |v,id| %><%= v %>   
+    # <% id.each do |x,y| %>
+     #<%= link_to "#{y}", likepost_wall_like_path(x) %> <p>
+     # <% end %>
+     # <% end %>
+     #<% end %>
+
+               else
+             # @hash[User.where(:id=>abc[i])]= {"#{wall[j].post_wall}"=>{"#{wall[j].id}"=>"unlike"}}
+            end
+           end
+        end
+      end
+      
   end
   
 
@@ -62,5 +83,4 @@ class UserController < ApplicationController
       render edit_user(@user)
     end
   end
-
 end
